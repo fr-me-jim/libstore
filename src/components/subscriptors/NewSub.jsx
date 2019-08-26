@@ -30,7 +30,7 @@ const NewSub = (props) => {
         firestore.add({
             collection: 'subscriptors'
         }, newSub).then(() => history.push('/subs'));
-    }
+    };
 
     return (  
         <div className="row">
