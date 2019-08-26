@@ -3,10 +3,25 @@ import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import PropTypes from 'prop-types';
 
-const Subscriptors = ({subscriptors}) => {
+// spinner
+import Spinner from '../layout/Spinner';
 
-    if(!subscriptors) return <h1>Loading...</h1>;
+const Subscriptors = ({subscriptors, firestore}) => {
+
+    if(!subscriptors) return <Spinner />;
+
+    // handle clicks 
+    const handleClick = id => {
+        // delete
+        firestore.delete({
+            collection: 'subscriptors',
+            doc: id
+        });
+    
+    }
+
 
     return (  
         <div className="row">
@@ -42,10 +57,18 @@ const Subscriptors = ({subscriptors}) => {
                             <td>
                                 <Link
                                     to={`/subs/show/${sub.id}`}
-                                    className="btn btn-info btn-block"
+                                    className="btn btn-info mr-2"
                                 >
                                     <i className="fa fa-angle-double-right"></i> More info
                                 </Link>
+
+                                <button 
+                                    type="button"
+                                    className="btn btn-danger ml-2"
+                                    onClick={() => handleClick(sub.id)}
+                                >
+                                    <i className="fa fa-trash-alt"></i> Delete
+                                </button>
                             </td>
                         </tr>
                     ))}
@@ -53,6 +76,11 @@ const Subscriptors = ({subscriptors}) => {
             </table>
         </div>
     );
+}
+
+Subscriptors.propTypes = {
+    firestore: PropTypes.object.isRequired,
+    subscriptors: PropTypes.array
 }
  
 export default compose(
