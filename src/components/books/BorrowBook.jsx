@@ -30,13 +30,14 @@ const BorrowBook = (props) => {
         sub.date = new Date().toLocaleDateString();
 
         // add sub to borrwed
-        book.borrowed.push(sub);
+        const updatedBook = book;
+        updatedBook.borrowed.push(sub);
 
         // store in bd
         firestore.update({
             collection: 'books',
-            doc: book.id
-        }, book).then(history.push('/')); 
+            doc: updatedBook.id
+        }, updatedBook).then(history.push('/')); 
 
     }
 

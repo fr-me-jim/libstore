@@ -8,7 +8,10 @@ import PropTypes from 'prop-types';
 // spinner
 import Spinner from '../layout/Spinner';
 
-const ShowBook = ({book}) => {
+const ShowBook = (props) => {
+
+    // extract firestore from props
+    const { book, firestore, history } = props; 
 
     if(!book) return <Spinner />;
 
@@ -19,8 +22,22 @@ const ShowBook = ({book}) => {
                             className="btn btn-success">Borrow Book</Link>
     } else borrowButton = null;
 
+    // return book
     const handleClick = code => {
         
+        // get copy of book
+        const updateBook = {...book};
+
+        // delete borrower from array
+        const borrowers = book.borrowed.filter( borrower => borrower.code !== code );
+        updateBook.borrowed = borrowers;
+
+        // update firestore
+        firestore.update({
+            collection: 'books',
+            doc: updateBook.id
+        }, updateBook);
+
     }
     
 
