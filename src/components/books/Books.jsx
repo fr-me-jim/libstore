@@ -8,9 +8,19 @@ import PropTypes from 'prop-types';
 // spinner
 import Spinner from '../layout/Spinner';
 
-const Books = ({books}) => {
+const Books = ({books, firestore}) => {
 
     if(!books) return <Spinner />;
+
+    // delete book
+    const handleClick = id => {
+        // delete in firestore
+        firestore.delete({
+            collection: 'books',
+            doc: id
+        });
+
+    }
 
     return (  
         <div className="row">
@@ -64,6 +74,7 @@ const Books = ({books}) => {
                                 <button 
                                     type="button"
                                     className="btn btn-danger ml-2"
+                                    onClick={() => handleClick(book.id)}
                                 >
                                     <i className="fa fa-trash"></i> Delete
                                 </button>
