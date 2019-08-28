@@ -19,6 +19,8 @@ import ShowBook from './components/books/ShowBook';
 import EditBook from './components/books/EditBook';
 import BorrowBook from './components/books/BorrowBook';
 
+import Login from './components/auth/Login';
+
 
 function App() {
   return (
@@ -39,6 +41,7 @@ function App() {
             <Route exact path="/subs/edit/:id" component={ EditSub } />
             <Route exact path="/subs/show/:id" component={ ShowSubs } />
 
+            <Route exact path="/login" component={ Login } />
           </Switch>
         </div>
       </Router>
