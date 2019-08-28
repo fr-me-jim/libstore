@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { firebaseConnect } from 'react-redux-firebase';
-
+import PropTypes from 'prop-types';
 
 const Login = (props) => {
 
@@ -18,7 +18,7 @@ const Login = (props) => {
         firebase.login({
             email,
             password
-        }).then(history.push('/'));
+        }).then(history.push('/')).catch(console.log('error'));
     }
 
     return (  
@@ -67,6 +67,10 @@ const Login = (props) => {
             </div>
         </div>
     );
-}
+};
+
+Login.propTypes = {
+    firebase: PropTypes.object.isRequired
+};
  
 export default firebaseConnect()(Login);

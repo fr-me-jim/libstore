@@ -120,6 +120,12 @@ const BorrowBook = (props) => {
                         {/* Show button + sub card */}
                         {subCard}
                         {borrowBtn}
+                        {noResult ? 
+                            <div className="alert alert-danger">
+                                Subscriptor not found.
+                            </div>
+                            : null
+                        }
                     </div>
                 </div>
             </div>

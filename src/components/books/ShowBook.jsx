@@ -11,7 +11,7 @@ import Spinner from '../layout/Spinner';
 const ShowBook = (props) => {
 
     // extract firestore from props
-    const { book, firestore, history } = props; 
+    const { book, firestore } = props; 
 
     if(!book) return <Spinner />;
 

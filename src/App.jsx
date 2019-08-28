@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { UserIsAuthenticated, UserIsNotAuthenticated } from './helpers/auth';
 
 // store
 import store from './store';
@@ -30,18 +31,18 @@ function App() {
 
         <div className="container">
           <Switch>
-            <Route exact path="/" component={ Books } />
-            <Route exact path="/books/new" component={ NewBook } />
-            <Route exact path="/books/show/:id" component={ ShowBook } />
-            <Route exact path="/books/edit/:id" component={ EditBook } />
-            <Route exact path="/books/borrow/:id" component={ BorrowBook } />
+            <Route exact path="/" component={ UserIsAuthenticated(Books) } />
+            <Route exact path="/books/new" component={ UserIsAuthenticated(NewBook) } />
+            <Route exact path="/books/show/:id" component={ UserIsAuthenticated(ShowBook) } />
+            <Route exact path="/books/edit/:id" component={ UserIsAuthenticated(EditBook) } />
+            <Route exact path="/books/borrow/:id" component={ UserIsAuthenticated(BorrowBook) } />
 
-            <Route exact path="/subs" component={ Subscriptors } />
-            <Route exact path="/subs/new" component={ NewSub } />
-            <Route exact path="/subs/edit/:id" component={ EditSub } />
-            <Route exact path="/subs/show/:id" component={ ShowSubs } />
+            <Route exact path="/subs" component={ UserIsAuthenticated(Subscriptors) } />
+            <Route exact path="/subs/new" component={ UserIsAuthenticated(NewSub) } />
+            <Route exact path="/subs/edit/:id" component={ UserIsAuthenticated(EditSub) } />
+            <Route exact path="/subs/show/:id" component={ UserIsAuthenticated(ShowSubs) } />
 
-            <Route exact path="/login" component={ Login } />
+            <Route exact path="/login" component={ UserIsNotAuthenticated(Login) } />
           </Switch>
         </div>
       </Router>
