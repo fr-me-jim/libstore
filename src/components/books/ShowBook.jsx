@@ -79,7 +79,7 @@ const ShowBook = (props) => {
                 <h3 className="my-5">Subs that borrowed this book</h3>
                 {/* Show Borrowers */}
                 {book.borrowed.map( borrower => (
-                    <div key={borrower.code} className="card my-2">
+                    <div key={borrower.id} className="card my-2">
                         <h4 className="card-header">
                             {borrower.name} {borrower.surename}
                         </h4>

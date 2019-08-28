@@ -9,29 +9,36 @@ import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
 import SubCard from '../subscriptors/SubCard';
 
+// actions
+import { findSub } from '../../actions/findSubAction';
+
 const BorrowBook = (props) => {
 
     // state
     const [search, setSearch] = useState('');
-    const [result, setResult] = useState({});
+    const [result, setResult] = useState(false);
     const [noResult, setNoResult] = useState(false);
 
     // extract firestore from props
-    const { book, firestore, history } = props; 
+    const { book, firestore, history, sub, findSub } = props; 
 
     if(!book) return <Spinner />;
 
 
     // store 
-    const handleClick = (params) => {
-        const sub = result;
+    const handleClick = () => {
+        const obtainedSub = sub;
 
         // date
-        sub.date = new Date().toLocaleDateString();
+        obtainedSub.date = new Date().toLocaleDateString();
 
-        // add sub to borrwed
-        const updatedBook = book;
-        updatedBook.borrowed.push(sub);
+        // props can't be muted, so get a copy
+        let borrowed = [];
+        borrowed = [...book.borrowed, obtainedSub];
+
+        const updatedBook = {...book};
+        delete updatedBook.borrowed;
+        updatedBook.borrowed = borrowed;
 
         // store in bd
         firestore.update({
@@ -54,18 +61,21 @@ const BorrowBook = (props) => {
             if( response.empty ) {
                 // no results
                 setNoResult(true);
-                setResult({});
+                findSub({});
+                setResult(false);
             } else {
                 const data = response.docs[0].data();
-                setResult(data);
+                findSub(data);
                 setNoResult(false);
+                setResult(true);
+
             }
         })
     };
 
     var subCard, borrowBtn;
-    if(result.name) {
-        subCard = <SubCard sub={result} />
+    if(result) {
+        subCard = <SubCard sub={sub} />
         borrowBtn = <button 
                         type="submit"
                         onClick={handleClick}
@@ -79,7 +89,7 @@ const BorrowBook = (props) => {
         <div className="row">
             <div className="col-12 mb-4">
                 <Link 
-                    to={'/subs'}
+                    to={'/'}
                     className="btn btn-secondary"
                 >
                     <i className="fa fa-arrow-circle-left"></i> Back to List
@@ -108,7 +118,7 @@ const BorrowBook = (props) => {
                                     name="search"
                                     onChange={e => setSearch(e.target.value)}
                                 />
-                                <i class="fas fa-search"></i>
+                                <i className="fas fa-search"></i>
                             </div>
 
                             <button 
@@ -121,7 +131,7 @@ const BorrowBook = (props) => {
                         {subCard}
                         {borrowBtn}
                         {noResult ? 
-                            <div className="alert alert-danger">
+                            <div className="alert alert-danger text-center">
                                 Subscriptor not found.
                             </div>
                             : null
@@ -145,7 +155,8 @@ export default compose(
             doc: props.match.params.id
         }
     ]),
-    connect(({ firestore: {ordered} }, props) => ({
-        book: ordered.book && ordered.book[0]
-    }))
+    connect(({ firestore: {ordered}, sub }, props) => ({
+        book: ordered.book && ordered.book[0],
+        sub: sub
+    }), { findSub })
 )(BorrowBook);
