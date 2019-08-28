@@ -9,6 +9,10 @@ Project made with React && [React Hooks](https://en.reactjs.org/docs/hooks-intro
 
 Web for books management, allows all CRUD operations, using a Firestore DB.
 
+Credentials for loggin in :
+    user: mail@mail.com
+    password: 123456
+
 ### Aim
 
 Learning && Portfolio purpouses.
